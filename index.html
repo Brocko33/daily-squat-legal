@@ -1,14 +1,480 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Brocko Studio Legal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brocko Studio — Independent iOS Apps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:        #0f0f12;
+    --ink-soft:   #5a5a6e;
+    --paper:      #faf9f7;
+    --paper-tint: #f2f0ec;
+    --line:       #e4e2dc;
+    --accent:     #1a1a2e;
+    --squat-blue: #3b82f6;
+    --squat-dark: #1e3a8a;
+    --bac-gold:   #c9a84c;
+    --bac-dark:   #1a1209;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ─────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(250,249,247,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ── HERO ────────────────────────────────────── */
+  .hero {
+    padding: 160px 48px 100px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 36px;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .hero p {
+    font-size: 1.125rem;
+    color: var(--ink-soft);
+    max-width: 560px;
+    line-height: 1.75;
+  }
+
+  /* ── SECTION WRAPPER ─────────────────────────── */
+  .section {
+    padding: 80px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── APP CARD ────────────────────────────────── */
+  .app-card {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 36px;
+    padding: 40px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    margin-bottom: 24px;
+    background: var(--paper);
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    animation: fadeUp 0.6s both;
+  }
+  .app-card:hover {
+    border-color: #c8c5bc;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.07);
+  }
+
+  .app-icon {
+    width: 96px; height: 96px;
+    border-radius: 22px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--paper-tint);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .app-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .app-meta { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+
+  .app-header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+
+  .app-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .app-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .tag-ios   { background: #e8f0fe; color: #3b5bdb; }
+  .tag-suite { background: #fef3e0; color: #b45309; }
+
+  .app-desc {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .app-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pill {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: var(--paper-tint);
+    border: 1px solid var(--line);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* Suite sub-apps */
+  .suite-apps {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .suite-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: var(--ink-soft);
+  }
+  .suite-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Bachelier card theming */
+  .card-bachelier {
+    background: linear-gradient(135deg, #fffdf7 0%, #faf6ec 100%);
+    border-color: #e8dfc8;
+  }
+  .card-bachelier:hover { border-color: var(--bac-gold); }
+
+  /* Daily Squat card theming */
+  .card-squat {
+    background: linear-gradient(135deg, #f7f9ff 0%, #eef3ff 100%);
+    border-color: #d5e0f8;
+  }
+  .card-squat:hover { border-color: var(--squat-blue); }
+
+  /* Bachelier SVG icon */
+  .bachelier-icon {
+    width: 96px; height: 96px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, var(--bac-dark) 0%, #2e1f0a 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── ABOUT ───────────────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .about-block {
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--paper-tint);
+    animation: fadeUp 0.6s both;
+  }
+
+  .about-block h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+
+  .about-block p {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ─────────────────────────────────── */
+  .contact-row {
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+    padding: 40px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper-tint);
+  }
+
+  .contact-row p {
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .contact-link {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--paper);
+    background: var(--ink);
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .contact-link:hover { background: #2e2e3e; transform: translateY(-1px); }
+
+  /* ── FOOTER ──────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    max-width: 100%;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--ink); }
+
+  /* ── ANIMATIONS ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero           { animation: fadeUp 0.7s both; }
+  .hero p         { animation: fadeUp 0.7s 0.1s both; }
+  .app-card:nth-child(1) { animation-delay: 0.05s; }
+  .app-card:nth-child(2) { animation-delay: 0.15s; }
+  .about-block:nth-child(1) { animation-delay: 0.1s; }
+  .about-block:nth-child(2) { animation-delay: 0.2s; }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 640px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero, .section { padding-left: 24px; padding-right: 24px; }
+    .app-card { grid-template-columns: 1fr; gap: 24px; padding: 28px; }
+    .bachelier-icon, .app-icon { width: 80px; height: 80px; border-radius: 18px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .contact-row { flex-direction: column; align-items: flex-start; }
+    footer { padding: 24px; }
+  }
+</style>
 </head>
 <body>
-<h1>Daily Squat Legal</h1>
-<ul>
-<li><a href="daily-squat-privacy.html">Privacy Policy</a></li>
-<li><a href="daily-squat-terms.html">Terms of Use</a></li>
-</ul>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Brocko Studio</a>
+  <ul class="nav-links">
+    <li><a href="#apps">Apps</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Independent iOS Development</span>
+  <h1>Apps built with<br><em>care and intention.</em></h1>
+  <p>Brocko Studio is an independent iOS development studio crafting focused, well-designed apps for students, athletes, and everyday people.</p>
+</section>
+
+<!-- APPS -->
+<section class="section" id="apps">
+  <p class="section-label">Apps</p>
+
+  <!-- Daily Squat -->
+  <div class="app-card card-squat">
+    <div class="app-icon">
+      <img src="daily-squat-icon.png" alt="Daily Squat app icon">
+    </div>
+    <div class="app-meta">
+      <div class="app-header">
+        <span class="app-name">Daily Squat</span>
+        <span class="app-tag tag-ios">iOS</span>
+      </div>
+      <p class="app-desc">
+        A beautifully simple habit tracker for your squat routine. Log your reps, build daily streaks, set per-weekday goals, and stay on track with smart reminders that adapt to your schedule.
+      </p>
+      <div class="app-pills">
+        <span class="pill">Habit tracking</span>
+        <span class="pill">Streak system</span>
+        <span class="pill">Smart reminders</span>
+        <span class="pill">Custom goals</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bachelier Suite -->
+  <div class="app-card card-bachelier">
+    <div class="bachelier-icon">
+      <!-- Bachelier icon: a stylised graduation cap / bac diploma mark -->
+      <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Open book -->
+        <path d="M10 16 L26 12 L42 16 L42 38 L26 34 L10 38 Z" fill="none" stroke="#c9a84c" stroke-width="1.8" stroke-linejoin="round"/>
+        <line x1="26" y1="12" x2="26" y2="34" stroke="#c9a84c" stroke-width="1.8"/>
+        <!-- Mortarboard cap -->
+        <polygon points="26,6 36,11 26,16 16,11" fill="#c9a84c" opacity="0.9"/>
+        <line x1="36" y1="11" x2="36" y2="19" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="36" cy="20" r="1.8" fill="#c9a84c"/>
+        <!-- Integral symbol hint -->
+        <text x="18.5" y="29" font-family="Georgia, serif" font-style="italic" font-size="11" fill="#e8c97a" opacity="0.85">∫</text>
+        <!-- Pi hint -->
+        <text x="27" y="29" font-family="Georgia, serif" font-size="10" fill="#e8c97a" opacity="0.85">π</text>
+      </svg>
+    </div>
+    <div class="app-meta">
+      <div class="app-header">
+        <span class="app-name">Bachelier</span>
+        <span class="app-tag tag-suite">Suite</span>
+      </div>
+      <p class="app-desc">
+        An adaptive MCQ practice suite for French Terminale students preparing for the Baccalauréat. Intelligent question selection targets your weak areas and helps you build genuine mastery — not just exam luck. Each subject is a dedicated app backed by a shared adaptive engine.
+      </p>
+      <div class="app-pills">
+        <span class="pill">Spaced repetition</span>
+        <span class="pill">Progress rings</span>
+        <span class="pill">Exam simulation</span>
+        <span class="pill">Weak-zone training</span>
+      </div>
+      <div class="suite-apps">
+        <div class="suite-item">
+          <span class="suite-dot" style="background:#c9a84c;"></span>
+          Bachelier Maths — <em style="font-size:0.78rem; margin-left:4px;">Terminale • Coming soon</em>
+        </div>
+        <div class="suite-item">
+          <span class="suite-dot" style="background:#8bb8c8; opacity:0.6;"></span>
+          Bachelier Physique-Chimie — <em style="font-size:0.78rem; margin-left:4px; opacity:0.6;">Planned</em>
+        </div>
+        <div class="suite-item">
+          <span class="suite-dot" style="background:#9ac88b; opacity:0.6;"></span>
+          Bachelier SVT — <em style="font-size:0.78rem; margin-left:4px; opacity:0.6;">Planned</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <p class="section-label">About</p>
+  <div class="about-grid">
+    <div class="about-block">
+      <h3>Independent & focused</h3>
+      <p>Brocko Studio is a one-person development studio. Every app is designed and built from scratch, with genuine attention paid to the user experience and the problem being solved.</p>
+    </div>
+    <div class="about-block">
+      <h3>Built for iOS</h3>
+      <p>All apps are native iOS applications built with SwiftUI, targeting iPhones. No cross-platform compromises — just clean, fast, platform-native experiences.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <p class="section-label">Contact</p>
+  <div class="contact-row">
+    <p>Questions about an app, support requests, or press enquiries — reach out directly.</p>
+    <a class="contact-link" href="mailto:contact@brockostudio.com">contact@brockostudio.com</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Brocko Studio. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="daily-squat-privacy.html">Daily Squat Privacy Policy</a>
+    <a href="daily-squat-terms.html">Daily Squat Terms of Use</a>
+  </div>
+</footer>
+
 </body>
 </html>
